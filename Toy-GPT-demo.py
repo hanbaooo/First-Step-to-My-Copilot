@@ -53,6 +53,14 @@ class SimpleTokenizer:
         tokenizer.vocab_size = data['vocab_size']
         return tokenizer
 
+    def save(self, filepath):
+        """Save tokenizer to file."""
+        torch.save({
+            'stoi': self.stoi,
+            'itos': self.itos,
+            'vocab_size': self.vocab_size
+        }, filepath)
+
 
 # -------------------------
 # Scaled Dot-Product Attention
