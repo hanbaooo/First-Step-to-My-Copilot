@@ -1,5 +1,39 @@
 # First-Step-to-My-Copilot
-a simple implementation of GPT, the first step toward an model that can help write codes
+
+A simple implementation of GPT, the first step toward an model that can help write codes
+
+---
+## The purpose of this try
+
+Through this implementation of GPT, you will have a clearer understanding of:
+- the mechanism behind `Tokenizer`, `Self-Attention`, `Multi-head-self-attention`...
+- how training and generating texts works on a **pratical level**
+
+**If** you also have the **concern** on how to further the exploration on LLM, this is a good try
+-  only **ten** minutes needed to train on `cpu`
+
+---
+
+## Generate Demo
+```
+=== generation mode ===
+Model and tokenizer loaded successfully.
+input 'quit' to exit
+input your prompt
+
+User:data = [1, 2, 3
+Model:, 4, 5]
+for num in numbers:
+    total = total + number
+print(total)
+
+x = 15
+if x > 10:
+    print("Sm
+```
+**Actually** it is copying the data in `corpus.txt` and sometimes making some changes, due to the dataset is **tooo small**
+
+---
 
 ## GPT structure
 
@@ -31,10 +65,6 @@ a simple implementation of GPT, the first step toward an model that can help wri
 - `ffn`: FeedForward layer
 - has residual connection after attn and ffn layers
 
-
-
-
-
 ## project structure
 
 ```bash
@@ -43,7 +73,6 @@ First-Step-to-My-Copilot/
     |--tiny_gpt.pth 
     |--tokenizer.pth
 |--Tiny-GPT.py          # GPT model implementation
-|--load-corpus.py       # load corpus from wikitext
 |--corpus.txt           # Training corpus
 ```
 
