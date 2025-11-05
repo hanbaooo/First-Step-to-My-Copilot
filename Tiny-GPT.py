@@ -393,8 +393,8 @@ if __name__ == '__main__':
     parser.add_argument('--epochs', type=int, default=20)
     parser.add_argument('--train', action='store_true', help='Train the model')
     parser.add_argument('--generate', action='store_true', help='Generate text')
-    parser.add_argument('--model_path', default='tiny_gpt.pth', help='Path to save/load the model')
-    parser.add_argument('--tokenizer_path', default='tokenizer.pth', help='Path to save/load the tokenizer')
+    parser.add_argument('--model_path', default='paras/tiny_gpt.pth', help='Path to save/load the model')
+    parser.add_argument('--tokenizer_path', default='paras/tokenizer.pth', help='Path to save/load the tokenizer')
     args = parser.parse_args()
 
     file_path = "corpus.txt"
