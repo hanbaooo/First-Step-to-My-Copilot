@@ -408,19 +408,19 @@ if __name__ == '__main__':
         tokenizer = SimpleTokenizer(corpus)
         print(f"Vocab size: {tokenizer.vocab_size}")
 
-        block_size = 32 # the context length for training
+        block_size = 256 # the context length for training
         X, Y = build_dataset(corpus, tokenizer, block_size)
         print(f"Dataset size: {X.size(0)} sequences")
 
         model = TinyGPT(vocab_size=tokenizer.vocab_size,
-                        d_model=128,
-                        n_head=4,
-                        n_layer=4,
-                        d_ff=512,
+                        d_model=512,
+                        n_head=8,
+                        n_layer=8,
+                        d_ff=2048,
                         max_len=block_size)
 
         device = torch.device(args.device)
-        train_toy(model, X, Y, epochs=args.epochs, batch_size=256, lr=3e-4, device=device)
+        train_toy(model, X, Y, epochs=args.epochs, batch_size=32, lr=1e-3, device=device)
 
         print(f"Saving model to {args.model_path} and tokenizer to {args.tokenizer_path}")
         model.save(args.model_path)
