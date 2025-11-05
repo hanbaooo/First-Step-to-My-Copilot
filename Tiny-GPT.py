@@ -69,10 +69,10 @@ class SimpleTokenizer:
 def scaled_dot_product_attention(q, k, v, mask=None):
     """Scaled dot-product attention mechanism.
     Args:
-        q,k,v: (..., seq_len, head_dim)
+        q,k,v: (..., seq_len, embed_dim)
         mask: (..., seq_len, seq_len) with True at positions to mask
     Returns:
-        out: (..., seq_len, head_dim)
+        out: (..., seq_len, embed_dim)
         weights: (..., seq_len, seq_len) for visualization
     """
     dk = q.size(-1)
