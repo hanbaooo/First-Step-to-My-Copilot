@@ -16,7 +16,9 @@ import os
 import math
 import random
 import argparse
+from tqdm import tqdm
 from typing import List, Tuple
+from torch.utils.data import Dataset, DataLoader
 
 import torch
 from torch import nn
@@ -287,7 +289,7 @@ class TinyGPT(nn.Module):
             vocab_size=checkpoint['vocab_size'],
             d_model=checkpoint['d_model'],
             n_head=checkpoint['n_head'],
-            n_layer=checkpoint['n_layer'],
+            # n_layer=checkpoint['n_layer'],
             d_ff=checkpoint['d_ff'],
             max_len=checkpoint['max_len']
         )
@@ -302,8 +304,8 @@ class TinyGPT(nn.Module):
             'model_state_dict': self.state_dict(),
             'vocab_size': self.token_emb.num_embeddings,
             'd_model': self.d_model,
-            'n_head': self.layers[0].attn.n_head if len(self.layers) > 0 else 4,  # 可能出错！
-            'd_ff': self.layers[0].ffn.net[0].out_features if len(self.layers) > 0 else 512,  # 可能出错！
+            'n_head': self.layers[0].attn.n_head if len(self.layers) > 0 else 4,  
+            'd_ff': self.layers[0].ffn.net[0].out_features if len(self.layers) > 0 else 512,  
             'max_len': self.max_len
         }, filepath)
 
@@ -312,6 +314,7 @@ class TinyGPT(nn.Module):
 # Toy training loop
 # -------------------------
 
+'''
 def build_dataset(corpus: str, tokenizer: SimpleTokenizer, block_size: int) -> Tuple[torch.Tensor, torch.Tensor]:
     """char-level sliding windows -> next-token prediction
     Args:
@@ -328,34 +331,62 @@ def build_dataset(corpus: str, tokenizer: SimpleTokenizer, block_size: int) -> T
     X = torch.tensor(inputs, dtype=torch.long)
     Y = torch.tensor(targets, dtype=torch.long)
     return X, Y
+'''
+class TextDataset(Dataset):
+    def __init__(self, corpus: str, tokenizer: SimpleTokenizer, block_size: int):
+        """
+        A Dataset that lazily loads a text corpus for training a language model.
+        """
+        self.tokenizer = tokenizer
+        self.corpus = corpus
+        self.block_size = block_size
+        self.enc = tokenizer.encode(corpus)  # Tokenize the entire corpus once
+        self.total_length = len(self.enc)
+
+    def __len__(self):
+        return self.total_length - self.block_size  # Number of training sequences
+
+    def __getitem__(self, idx):
+        # Create input and target sequences
+        input_sequence = self.enc[idx:idx + self.block_size]
+        target_sequence = self.enc[idx + 1: idx + self.block_size + 1]
+        return torch.tensor(input_sequence, dtype=torch.long), torch.tensor(target_sequence, dtype=torch.long)
+
+def build_dataloader(corpus: str, tokenizer: SimpleTokenizer, block_size: int, batch_size: int) -> DataLoader:
+    dataset = TextDataset(corpus, tokenizer, block_size)
+    return DataLoader(dataset, batch_size=batch_size, shuffle=True, num_workers=4, pin_memory=True)
 
 
-def train_toy(model: TinyGPT, data_X, data_Y, epochs=10, batch_size=16, lr=3e-4, device='cpu'):
+def train_toy(model: TinyGPT, train_dataloader: DataLoader, epochs=10, lr=3e-4, device='cpu'):
     model.to(device)
     opt = torch.optim.AdamW(model.parameters(), lr=lr)
-    dataset_size = data_X.size(0)
 
     for epoch in range(epochs):
         model.train()
-        perm = torch.randperm(dataset_size) # shuffle dataset each epoch
         total_loss = 0.0
-        for i in range(0, dataset_size, batch_size): # i from 0 to dataset_size with step=batch_size
-            idx = perm[i:i+batch_size]
-            xb = data_X[idx].to(device)
-            yb = data_Y[idx].to(device)
-
+        for batch_idx, (xb, yb) in enumerate(tqdm(train_dataloader, desc=f"Epoch {epoch+1}/{epochs}, ncols=100")):
+            xb, yb = xb.to(device), yb.to(device)
+            # Forward pass
             logits, _ = model(xb)
+
+            # Reshape the logits to (batch_size * sequence_length, vocab_size)
             logits = logits.view(-1, logits.size(-1))
+
+            # Compute the loss
             loss = F.cross_entropy(logits, yb.view(-1))
 
+            # Backward pass
             opt.zero_grad()
             loss.backward()
-            torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0) # gradient clipping
+            
+            # Gradient clipping to prevent exploding gradients
+            torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+            # Update the model parameters
             opt.step()
-
             total_loss += loss.item() * xb.size(0)
-        avg_loss = total_loss / dataset_size
-        print(f"Epoch {epoch+1}/{epochs} - loss: {avg_loss:.4f}")
+
+        avg_loss = total_loss / len(train_dataloader.dataset)
+        print(f"Epoch {epoch+1}/{epochs} - Loss: {avg_loss:.4f}")
 
 def interactive_mode(model, tokenizer, device="cpu"):
     print("input 'quit' to exit")
@@ -408,19 +439,20 @@ if __name__ == '__main__':
         tokenizer = SimpleTokenizer(corpus)
         print(f"Vocab size: {tokenizer.vocab_size}")
 
-        block_size = 256 # the context length for training
-        X, Y = build_dataset(corpus, tokenizer, block_size)
-        print(f"Dataset size: {X.size(0)} sequences")
+        # create dataloader
+        block_size = 64 # the context length for training
+        train_dataloader = build_dataloader(corpus, tokenizer, block_size, batch_size=32)
+        print(f"Dataset size: {len(train_dataloader.dataset)} sequences")
 
         model = TinyGPT(vocab_size=tokenizer.vocab_size,
-                        d_model=512,
-                        n_head=8,
-                        n_layer=8,
-                        d_ff=2048,
+                        d_model=128,
+                        n_head=4,
+                        n_layer=4,
+                        d_ff=256,
                         max_len=block_size)
 
         device = torch.device(args.device)
-        train_toy(model, X, Y, epochs=args.epochs, batch_size=32, lr=1e-3, device=device)
+        train_toy(model, train_dataloader, epochs=args.epochs, lr=6e-4, device=device)
 
         print(f"Saving model to {args.model_path} and tokenizer to {args.tokenizer_path}")
         model.save(args.model_path)

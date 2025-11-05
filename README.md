@@ -8,7 +8,24 @@ a simple implementation of GPT, the first step toward an model that can help wri
 
 ### scaled_dot_product_attention
 - calculating the weights of each token to other tokens
-- the output has the shape of (..., seq_len, embed_dim) implementing the attention output of each token
+- `out`: the output has the shape of (..., seq_len, embed_dim) implementing the attention output of each token
+
+### class MultiHeadSelfAttention
+- create `qkv` and train together as a tensor, chunk it when to use, it enhance speed
+- `o_proj` is the output projection: to combine multi heads together but not concat seperatly
+- `attn_mask` to introduce casual mask
+
+### class FeedForward
+- `Linear(d_model, d_ff)`: to increase model capacity
+- `GELU()`: to introduce non-linearity
+
+### class DecoderBlock
+- `ln1/ln2`: LayerNorm for each token
+- `attn`: multiHeadSelfAttention
+- `ffn`: FeedForward layer
+- has residual connection after attn and ffn layers
+
+
 
 
 
