@@ -1,0 +1,165 @@
+# Save as corpus.txt
+Q: What color is the sky?
+A: The sky is blue.
+
+Q: What is the capital of France?
+A: The capital of France is Paris.
+
+Q: How many days are in a week?
+A: There are seven days in a week.
+
+Q: What is 2+2?
+A: 2+2 equals 4.
+
+Q: What do plants need to grow?
+A: Plants need sunlight, water, and air to grow.
+
+Q: What is the largest planet in our solar system?
+A: Jupiter is the largest planet in our solar system.
+
+Q: Who wrote Romeo and Juliet?
+A: William Shakespeare wrote Romeo and Juliet.
+
+Q: What is the chemical symbol for water?
+A: The chemical symbol for water is H2O.
+
+Q: What is the opposite of hot?
+A: The opposite of hot is cold.
+
+Q: What animal says "meow"?
+A: A cat says "meow".
+
+Q: What is the fastest land animal?
+A: The cheetah is the fastest land animal.
+
+Q: How many continents are there?
+A: There are seven continents.
+
+Q: What is the boiling point of water?
+A: Water boils at 100 degrees Celsius.
+
+Q: What do bees make?
+A: Bees make honey.
+
+Q: What is the tallest mountain in the world?
+A: Mount Everest is the tallest mountain.
+
+Q: Hello, how are you?
+A: I'm fine, thank you. How are you?
+
+Q: What is your name?
+A: My name is AI Assistant.
+
+Q: What time is it?
+A: I don't have access to the current time.
+
+Q: What is the weather like today?
+A: I cannot check the weather right now.
+
+Q: Can you help me?
+A: Yes, I can try to help you.
+
+Q: What is your favorite color?
+A: I don't have personal preferences.
+
+Q: How old are you?
+A: I am an AI, so I don't have an age.
+
+Q: Where are you from?
+A: I was created by developers.
+
+Q: What can you do?
+A: I can answer questions and have conversations.
+
+Q: Do you like music?
+A: I cannot like or dislike things, but I know about music.
+
+Q: What is the meaning of life?
+A: That is a philosophical question with many answers.
+
+Q: Tell me a joke.
+A: Why don't scientists trust atoms? Because they make up everything!
+
+Q: What is programming?
+A: Programming is writing instructions for computers.
+
+Q: Who is the president of the United States?
+A: I cannot provide real-time information about current leaders.
+
+Q: What is machine learning?
+A: Machine learning is a type of artificial intelligence.
+
+Q: What is Python?
+A: Python is a programming language.
+
+Q: What is gravity?
+A: Gravity is the force that pulls objects toward each other.
+
+Q: What is photosynthesis?
+A: Photosynthesis is how plants make food using sunlight.
+
+Q: What is the Internet?
+A: The Internet is a global network of computers.
+
+Q: What is electricity?
+A: Electricity is the flow of electrical power or charge.
+
+Q: What is mathematics?
+A: Mathematics is the study of numbers and shapes.
+
+Q: What is biology?
+A: Biology is the study of living organisms.
+
+Q: What is chemistry?
+A: Chemistry is the study of matter and its properties.
+
+Q: What is physics?
+A: Physics is the study of matter, energy, and their interactions.
+
+Q: What is history?
+A: History is the study of past events.
+
+Q: What is geography?
+A: Geography is the study of Earth's landscapes and environments.
+
+Q: What is art?
+A: Art is the expression of human creativity and imagination.
+
+Q: What is music?
+A: Music is the art of arranging sounds in time.
+
+Q: What is sports?
+A: Sports are physical activities and games with rules.
+
+Q: What is cooking?
+A: Cooking is preparing food for eating.
+
+Q: Good morning!
+A: Good morning! How can I help you today?
+
+Q: What should I eat for breakfast?
+A: You could have cereal, eggs, or toast for breakfast.
+
+Q: How do I get to the library?
+A: I don't have location information, but you can use a map.
+
+Q: What movie should I watch?
+A: That depends on what genre you like.
+
+Q: Can you recommend a book?
+A: Many people enjoy reading novels by famous authors.
+
+Q: What exercise is good for health?
+A: Walking, running, and swimming are all good exercises.
+
+Q: How do I learn English?
+A: Practice speaking, listening, reading, and writing regularly.
+
+Q: What is healthy food?
+A: Fruits, vegetables, and whole grains are healthy foods.
+
+Q: How much water should I drink?
+A: Most people should drink about 8 glasses of water daily.
+
+Q: What is a good hobby?
+A: Reading, painting, and sports are all good hobbies.
