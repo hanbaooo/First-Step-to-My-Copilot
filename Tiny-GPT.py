@@ -289,7 +289,7 @@ class TinyGPT(nn.Module):
             vocab_size=checkpoint['vocab_size'],
             d_model=checkpoint['d_model'],
             n_head=checkpoint['n_head'],
-            # n_layer=checkpoint['n_layer'],
+            n_layer=checkpoint['n_layer'],
             d_ff=checkpoint['d_ff'],
             max_len=checkpoint['max_len']
         )
@@ -305,6 +305,7 @@ class TinyGPT(nn.Module):
             'vocab_size': self.token_emb.num_embeddings,
             'd_model': self.d_model,
             'n_head': self.layers[0].attn.n_head if len(self.layers) > 0 else 4,  
+            'n_layer': len(self.layers),
             'd_ff': self.layers[0].ffn.net[0].out_features if len(self.layers) > 0 else 512,  
             'max_len': self.max_len
         }, filepath)
@@ -440,7 +441,7 @@ if __name__ == '__main__':
         print(f"Vocab size: {tokenizer.vocab_size}")
 
         # create dataloader
-        block_size = 64 # the context length for training
+        block_size = 32 # the context length for training
         train_dataloader = build_dataloader(corpus, tokenizer, block_size, batch_size=32)
         print(f"Dataset size: {len(train_dataloader.dataset)} sequences")
 
@@ -448,7 +449,7 @@ if __name__ == '__main__':
                         d_model=128,
                         n_head=4,
                         n_layer=4,
-                        d_ff=256,
+                        d_ff=512,
                         max_len=block_size)
 
         device = torch.device(args.device)
