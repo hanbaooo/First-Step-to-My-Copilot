@@ -295,6 +295,17 @@ class TinyGPT(nn.Module):
         model.to(device)
         model.eval()
         return model
+    
+    def save(self, filepath):
+        """Save model to checkpoint."""
+        torch.save({
+            'model_state_dict': self.state_dict(),
+            'vocab_size': self.token_emb.num_embeddings,
+            'd_model': self.d_model,
+            'n_head': self.layers[0].attn.n_head if len(self.layers) > 0 else 4,  # 可能出错！
+            'd_ff': self.layers[0].ffn.net[0].out_features if len(self.layers) > 0 else 512,  # 可能出错！
+            'max_len': self.max_len
+        }, filepath)
 
 
 # -------------------------
@@ -409,11 +420,11 @@ if __name__ == '__main__':
                         max_len=block_size)
 
         device = torch.device(args.device)
-        train_toy(model, X, Y, epochs=args.epochs, batch_size=8, lr=3e-4, device=device)
+        train_toy(model, X, Y, epochs=args.epochs, batch_size=256, lr=3e-4, device=device)
 
         print(f"Saving model to {args.model_path} and tokenizer to {args.tokenizer_path}")
-        torch.save(model.state_dict(), args.model_path)
-        torch.save(tokenizer.state_dict(), args.tokenizer_path)
+        model.save(args.model_path)
+        tokenizer.save(args.tokenizer_path)
 
     if args.generate:
         print("=== generation mode ===")
